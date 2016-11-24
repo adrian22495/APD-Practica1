@@ -33,7 +33,7 @@ public class GeneradorProductos {
             System.exit(1);
         }
         catch(NumberFormatException e2){
-            System.err.println("El valor "+ num_productos + "no es un numero valido");
+            System.err.println("El valor "+ num_productos + " no es un numero valido");
             System.exit(1);
         }
 
