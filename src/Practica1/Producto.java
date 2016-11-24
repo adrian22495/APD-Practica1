@@ -6,10 +6,10 @@ package Practica1;
 public class Producto {
 
     String nombre;
-    long unidades;
+    int unidades;
     double precio;
 
-    public Producto(String n, long u, double p){
+    public Producto(String n, int u, double p){
         nombre = n;
         unidades = u;
         precio = p;
@@ -19,7 +19,7 @@ public class Producto {
         return nombre;
     }
 
-    public long getUnidades() {
+    public int getUnidades() {
         return unidades;
     }
 
@@ -31,7 +31,7 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public void setUnidades(long unidades) {
+    public void setUnidades(int unidades) {
         this.unidades = unidades;
     }
 
