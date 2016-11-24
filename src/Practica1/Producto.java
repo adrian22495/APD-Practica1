@@ -38,4 +38,8 @@ public class Producto {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    public String toString(){
+        return nombre+"("+unidades+","+precio+")";
+    }
 }
