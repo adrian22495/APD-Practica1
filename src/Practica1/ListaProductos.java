@@ -61,7 +61,12 @@ public class ListaProductos {
     public String toString(){
         String cadena;
         if(siguiente==null){
-            cadena = producto.toString();
+            if(producto==null){
+                return "";
+            }
+            else{
+                cadena = producto.toString();
+            }
         }
         else{
             cadena = producto.toString() + " - " + siguiente.toString();
