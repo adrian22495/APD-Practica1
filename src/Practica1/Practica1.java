@@ -2,12 +2,13 @@ package Practica1;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 
-/**
- * Created by adrian on 21/11/2016.
- */
+
 public class Practica1 {
+
+    private static Random r = new Random(System.currentTimeMillis());
 
     private static int num_productos = 0;
     private static Scanner lector_pr = null;
@@ -39,57 +40,71 @@ public class Practica1 {
         th = new TablaHash((int) num_productos/5); // En cada lista de la tabla habra 5 productos en media
         relaciones = new Boolean[num_productos][num_productos];
 
-        cargarProductos();
-        cargarRelaciones();
+        Grafo g = new Grafo();
 
-        //System.out.println("TABLA HASH PRODUCTOS: ");
-        //System.out.println(th.toString());
-        //System.out.println("TABLA DE RELACIONES: ");
-        //for(int i=0 ; i<num_productos ; i++){
-        //    for(int j=0 ; j<num_productos ; j++){
-        //        System.out.printf(relaciones[i][j]+"  ");
-        //    }
-        //    System.out.println();
-        //}
+        cargarProductos(g);
+        cargarRelaciones(g);
+
+        System.out.println(g.toString());
     }
 
-    private static void cargarProductos(){
+    private static void cargarProductos(Grafo g){
         for(int i=0 ; i<num_productos ; i++) {
             String producto = lector_pr.nextLine();
             String[] componentes = producto.split(" ");
             try {
-                th.introducirProducto(new Producto(componentes[0], Integer.parseInt(componentes[1]), Double.parseDouble(componentes[2])));
+                Producto p = new Producto(componentes[0], Integer.parseInt(componentes[1]), Double.parseDouble(componentes[2]));
+                Vertice v = new Vertice(g.getNumVertices(),p);
+                g.añadirVertice(v);
             } catch (NumberFormatException e) {
                 System.out.println("ERROR");
             }
         }
     }
 
-    private static void cargarRelaciones(){
+    private static void cargarRelaciones(Grafo g){
         for(int i=0 ; i<num_productos ; i++){
             String relacion = lector_re.nextLine();
             String[] componentes = relacion.split(" ");
             for(int j=0 ; j<componentes.length ; j++) {
                 try {
-                    relaciones[i][j] = Boolean.parseBoolean(componentes[j]);
-                    relaciones[j][i] = Boolean.parseBoolean(componentes[j]);
+                    boolean existe_arista = Boolean.parseBoolean(componentes[j]);
+                    if(existe_arista){
+                        Arista a = new Arista(j,i);
+                        g.añadirArista(a);
+                    }
                 } catch (NumberFormatException e) {}
             }
         }
     }
 
-    private static void Karger(){
-        //Repetir n^2 veces
-        //  Mientras queden mas de 2 nodos
-        //    Elegir 2 nodos al azar
-        //    Contraerlos en uno solo
-        //  fMientras
-        //  Si el numero de aristas([nuevas]) entre los dos es menor que las antes calculadas: [corte] = [nuevas];
-        //fRepetir
-        //El corte mínimo es [corte]
+    private static Grafo Karger(Grafo g){
 
-        //Coste(n^4)
-        //Probabilidad de correcto sin repeticiones = 1/(n^2)
-        //Probabilidad de correcto con repeticiones = (n^2) * 1/(n^2) = 1
+        Grafo g_mejor = null;
+
+        //Repetimos n^2 veces para "asegurarnos" que es la solucion óptima
+        for(int i=0 ; i<num_productos*num_productos ; i++){
+
+            /******************************************/
+            //Hay que hacer una copia en profundidad  //
+            // Grafo g_copia = g;                     //
+            /******************************************/
+
+            //Mientras queden mas de 2 vertices comprimimos dos al azar
+            while(g_copia.getNumVertices()>2){
+                int arista = r.nextInt(g_copia.getNumAristas());
+                g_copia.contraer(arista);
+            }
+
+            //Si la solución obtenida es mejor, nos la guardamos
+            if(g_copia.getNumAristas()<g_mejor.getNumAristas()){
+                /******************************************/
+                //Hay que hacer una copia en profundidad  //
+                // g_mejor = g_copia;                     //
+                /******************************************/
+            }
+        }
+
+        return g_mejor;
     }
 }

@@ -5,15 +5,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
 
-/**
- * Created by ALEX on 24/11/2016.
- */
+
 public class GeneradorProductos {
 
     public static final int MAX_UNIDADES = 50000;
     public static final int MAX_PRECIO = 10000;
 
     public static void main(String[] args){
+
+        // ---------------- COMPROBACION DE PARAMETROS -------------------------
 
         if(args.length<3){
             System.err.println("Uso: java GeneradorProductos [num_productos] [fichero_productos] [fichero_relaciones]");
@@ -38,6 +38,8 @@ public class GeneradorProductos {
             System.exit(1);
         }
 
+        // ---------------- GENERAMOS EL FICHERO DE PRODUCTOS -------------------------
+
         Random r = new Random(System.currentTimeMillis());
         for(int i=1 ; i<=num_productos ; i++){
             String nombre = "p"+i;
@@ -50,11 +52,27 @@ public class GeneradorProductos {
         escritor_pr.flush();
         escritor_pr.close();
 
-        for(int i=0 ; i<num_productos ; i++){
+        // ---------------- GENERAMOS EL FiCHERO DE RELACIONES -------------------------
+
+        for(int i=1 ; i<=num_productos ; i++){
             String lista = "";
-            for(int j=i ; j<num_productos ; j++){
-                lista = lista + r.nextBoolean() + " ";
+            boolean conexo = false;
+            for(int j=1 ; j<=i ; j++){
+                if(j==i){
+                    lista = lista + true + " ";
+                    conexo = true;
+                }
+                else if((j==i-1) && !conexo){
+                    lista = lista + true + " ";
+                    conexo = true;
+                }
+                else {
+                    boolean conexion = r.nextBoolean();
+                    lista = lista + conexion + " ";
+                    conexo = conexion || conexo;
+                }
             }
+
             escritor_re.println(lista);
         }
         escritor_re.flush();
