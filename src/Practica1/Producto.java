@@ -1,8 +1,5 @@
 package Practica1;
 
-/**
- * Created by ALEX on 24/11/2016.
- */
 public class Producto {
 
     String nombre;

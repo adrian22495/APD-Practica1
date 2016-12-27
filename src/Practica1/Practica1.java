@@ -46,6 +46,8 @@ public class Practica1 {
         cargarRelaciones(g);
 
         System.out.println(g.toString());
+
+        Karger(g);
     }
 
     private static void cargarProductos(Grafo g){
@@ -54,7 +56,7 @@ public class Practica1 {
             String[] componentes = producto.split(" ");
             try {
                 Producto p = new Producto(componentes[0], Integer.parseInt(componentes[1]), Double.parseDouble(componentes[2]));
-                Vertice v = new Vertice(g.getNumVertices(),p);
+                Vertice v = new Vertice(p);
                 g.añadirVertice(v);
             } catch (NumberFormatException e) {
                 System.out.println("ERROR");
@@ -69,8 +71,8 @@ public class Practica1 {
             for(int j=0 ; j<componentes.length ; j++) {
                 try {
                     boolean existe_arista = Boolean.parseBoolean(componentes[j]);
-                    if(existe_arista){
-                        Arista a = new Arista(j,i);
+                    if(existe_arista && i!=j){
+                        Arista a = new Arista("p"+(j+1),"p"+(i+1));
                         g.añadirArista(a);
                     }
                 } catch (NumberFormatException e) {}
@@ -78,33 +80,14 @@ public class Practica1 {
         }
     }
 
-    private static Grafo Karger(Grafo g){
+    private static void Karger(Grafo g) {
 
-        Grafo g_mejor = null;
-
-        //Repetimos n^2 veces para "asegurarnos" que es la solucion óptima
-        for(int i=0 ; i<num_productos*num_productos ; i++){
-
-            /******************************************/
-            //Hay que hacer una copia en profundidad  //
-            // Grafo g_copia = g;                     //
-            /******************************************/
-
-            //Mientras queden mas de 2 vertices comprimimos dos al azar
-            while(g_copia.getNumVertices()>2){
-                int arista = r.nextInt(g_copia.getNumAristas());
-                g_copia.contraer(arista);
-            }
-
-            //Si la solución obtenida es mejor, nos la guardamos
-            if(g_copia.getNumAristas()<g_mejor.getNumAristas()){
-                /******************************************/
-                //Hay que hacer una copia en profundidad  //
-                // g_mejor = g_copia;                     //
-                /******************************************/
-            }
+        //Mientras queden mas de 2 vertices comprimimos dos al azar
+        while (g.getNumVertices() > 2) {
+            int arista = r.nextInt(g.getNumAristas());
+            System.out.println("Contraer arista: "+arista);
+            g.contraer(arista);
+            System.out.println(g.toString());
         }
-
-        return g_mejor;
     }
 }

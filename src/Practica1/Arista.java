@@ -1,27 +1,27 @@
 package Practica1;
 
 public class Arista {
-    private int vertice_1;
-    private int vertice_2;
+    private String vertice_1;
+    private String vertice_2;
 
-    public Arista(int v1, int v2){
+    public Arista(String v1, String v2){
         vertice_1 = v1;
         vertice_2 = v2;
     }
 
-    public int getVertice1(){
+    public String getVertice1(){
         return vertice_1;
     }
 
-    public int getVertice_2(){
+    public String getVertice2(){
         return vertice_2;
     }
 
-    public void setVertice_1(int v1){
+    public void setVertice1(String v1){
         vertice_1 = v1;
     }
 
-    public void setVertice_2(int v2){
+    public void setVertice2(String v2){
         vertice_2 = v2;
     }
 

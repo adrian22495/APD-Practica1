@@ -3,13 +3,15 @@ package Practica1;
 import java.util.ArrayList;
 
 public class Vertice {
-    private int id;
     private Producto p;
     private ArrayList<Vertice> absorbidos = new ArrayList<Vertice>();
 
-    public Vertice(int identificador, Producto producto){
-        id = identificador;
+    public Vertice(Producto producto){
         p = producto;
+    }
+
+    public Producto getProducto(){
+        return p;
     }
 
     public ArrayList<Vertice> getAbsorbidos(){
@@ -22,10 +24,10 @@ public class Vertice {
 
     public String toString(){
         if(absorbidos.size()==0){
-            return "" + id;
+            return "" + p.getNombre();
         }
         else{
-            String cadena = "" + id;
+            String cadena = "" + p.getNombre();
             for(int i=0 ; i<absorbidos.size() ; i++){
                 cadena = cadena + "(" + absorbidos.get(i).toString() + ")";
             }

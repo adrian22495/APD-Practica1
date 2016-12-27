@@ -2,22 +2,21 @@ package Practica1;
 
 import java.util.Random;
 
-/**
- * Created by adrian on 24/11/2016.
- */
 public class TablaHash {
 
-    private ListaProductos[] tabla;
+    private ListaVertices[] tabla;
     private int[] tablaAleatoria;
     private int size;
+    private int num_vertices;
 
     public TablaHash(int s){
         size = s;
+        num_vertices = 0;
 
         //Inicializamos la tabla
-        tabla = new ListaProductos[size];
+        tabla = new ListaVertices[size];
         for(int i = 0; i<size;i++){
-            tabla[i]  = new ListaProductos();
+            tabla[i]  = new ListaVertices();
         }
         //Preparamos la tabla aleatoria para la funcion hash
         tablaAleatoria = new int[256];
@@ -35,27 +34,55 @@ public class TablaHash {
     }
 
     /**
-     * Devolvera el producto con ese nombre, si no se encuentra
-     * Devolvera el producto con ese nombre, si no se encuentra
+     * Devolvera el Vertice con ese nombre, si no se encuentra
+     * Devolvera el Vertice con ese nombre, si no se encuentra
      * devolvera null.
      * @param nombre
      * @return
      */
-    public Producto buscarProducto(String nombre)
+    public Vertice buscarVertice(String nombre)
     {
         int posicion = funcionHash(nombre);
-        ListaProductos listP= tabla[posicion];
-        while(listP != null && listP.getProducto()!=null){
-            if(listP.getProducto().getNombre().equals(nombre)){
-                return listP.getProducto();
+        ListaVertices listV= tabla[posicion];
+        while(listV != null && listV.getVertice()!=null){
+            if(listV.getVertice().getProducto().getNombre().equals(nombre)){
+                return listV.getVertice();
             }
-            listP = listP.getSiguiente();
+            listV = listV.getSiguiente();
         }
         return null;
     }
-    public void introducirProducto(Producto p) {
-        int posicion = funcionHash(p.getNombre());
-        tabla[posicion].anadirProducto(p);
+
+    public void introducirVertice(Vertice v) {
+        num_vertices++;
+        int posicion = funcionHash(v.getProducto().getNombre());
+        tabla[posicion].anadirVertice(v);
+    }
+
+    public void borrarVertice(String nombre){
+        num_vertices--;
+        int posicion = funcionHash(nombre);
+        ListaVertices listV = tabla[posicion];
+
+        while(listV!=null && listV.getVertice() != null){
+            if(listV.getSiguiente()==null){
+                if(listV.getVertice().getProducto().getNombre().equals(nombre)){
+                    listV.setVertice(null);
+                }
+                else{
+                    listV = null;
+                }
+            }
+            else{
+                if(listV.getVertice().getProducto().getNombre().equals(nombre)){
+                    listV.setVertice(listV.getSiguiente().getVertice());
+                    listV.setSiguiente(listV.getSiguiente().getSiguiente());
+                }
+                else{
+                    listV = listV.getSiguiente();
+                }
+            }
+        }
     }
 
     private int funcionHash(String s){
@@ -66,10 +93,16 @@ public class TablaHash {
         return h;
     }
 
+    public int getNumVertices(){
+        return num_vertices;
+    }
+
     public String toString(){
         String cadena = "";
         for(int i=0 ; i<tabla.length ; i++){
-            cadena = cadena + tabla[i].toString() + "\n";
+            if(tabla[i]!=null) {
+                cadena = cadena + tabla[i].toString();
+            }
         }
         return cadena;
     }
