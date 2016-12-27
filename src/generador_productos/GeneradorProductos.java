@@ -10,6 +10,7 @@ public class GeneradorProductos {
 
     public static final int MAX_UNIDADES = 50000;
     public static final int MAX_PRECIO = 10000;
+    public static final int MAX_CONEXIONES = 5;
 
     public static void main(String[] args){
 
@@ -59,17 +60,22 @@ public class GeneradorProductos {
             boolean conexo = false;
             for(int j=1 ; j<=i ; j++){
                 if(j==i){
-                    lista = lista + true + " ";
+                    lista = lista + MAX_CONEXIONES + " ";
                     conexo = true;
                 }
                 else if((j==i-1) && !conexo){
-                    lista = lista + true + " ";
+                    lista = lista + (1+r.nextInt(MAX_CONEXIONES-1)) + " ";
                     conexo = true;
                 }
                 else {
-                    boolean conexion = r.nextBoolean();
+                    int conexion = r.nextInt(MAX_CONEXIONES);
                     lista = lista + conexion + " ";
-                    conexo = conexion || conexo;
+                    if(conexion>0) {
+                        conexo = true;
+                    }
+                    else{
+                        conexo = false;
+                    }
                 }
             }
 

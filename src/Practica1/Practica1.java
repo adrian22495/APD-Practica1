@@ -14,7 +14,7 @@ public class Practica1 {
     private static Scanner lector_pr = null;
     private static Scanner lector_re = null;
     private static TablaHash th = null;
-    private static Boolean relaciones[][] = null;
+    private static Integer relaciones[][] = null;
 
     public static void main(String[] args){
 
@@ -38,7 +38,7 @@ public class Practica1 {
         }
 
         th = new TablaHash((int) num_productos/5); // En cada lista de la tabla habra 5 productos en media
-        relaciones = new Boolean[num_productos][num_productos];
+        relaciones = new Integer[num_productos][num_productos];
 
         Grafo g = new Grafo();
 
@@ -70,8 +70,8 @@ public class Practica1 {
             String[] componentes = relacion.split(" ");
             for(int j=0 ; j<componentes.length ; j++) {
                 try {
-                    boolean existe_arista = Boolean.parseBoolean(componentes[j]);
-                    if(existe_arista && i!=j){
+                    Integer conexiones = Integer.parseInt(componentes[j]);
+                    if(conexiones>0 && i!=j){
                         Arista a = new Arista("p"+(j+1),"p"+(i+1));
                         g.añadirArista(a);
                     }
