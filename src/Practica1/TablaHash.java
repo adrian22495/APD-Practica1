@@ -44,7 +44,7 @@ public class TablaHash {
     {
         int posicion = funcionHash(nombre);
         ListaVertices listV= tabla[posicion];
-        while(listV != null && listV.getVertice()!=null){
+        while(listV!=null && listV.getVertice()!=null){
             if(listV.getVertice().getProducto().getNombre().equals(nombre)){
                 return listV.getVertice();
             }

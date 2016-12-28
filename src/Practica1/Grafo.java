@@ -59,6 +59,11 @@ public class Grafo {
         String id_v2 = a.getVertice2();
         Vertice v2 = vertices.buscarVertice(id_v2);
 
+        int nulos = 0;
+        if(v1==null || v2==null){
+            nulos ++;
+        }
+
         //v1 absorve v2
         v1.absorber(v2);
 
@@ -79,6 +84,7 @@ public class Grafo {
             if(a.getVertice1().equals(a.getVertice2())){
                 suma_pesos = suma_pesos - a.getPeso();
                 aristas.remove(i);
+                i--; //Para compensar la que se ha eliminado
             }
         }
     }

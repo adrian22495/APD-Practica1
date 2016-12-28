@@ -14,13 +14,15 @@ public class Practica1 {
     private static Scanner lector_pr = null;
     private static Scanner lector_re = null;
     private static TablaHash th = null;
-    private static Integer relaciones[][] = null;
-    private static Producto productos[];
+    private static Integer[][] relaciones;
+    private static Producto[] productos;
+
+    private static int repeticiones=0;
 
     public static void main(String[] args){
 
-        if(args.length!=3){
-            System.err.println("Uso: java Practica1 [num_productos] [fichero_productos] [fichero_relaciones]");
+        if(args.length!=4){
+            System.err.println("Uso: java Practica1 [num_productos] [fichero_productos] [fichero_relaciones] [repeticiones]");
             System.exit(1);
         }
 
@@ -34,23 +36,40 @@ public class Practica1 {
             System.exit(1);
         }
         catch(NumberFormatException e2){
-            System.err.println("El numero de porductos "+ num_productos + " no es un numero valido");
+            System.err.println("El numero de productos "+ args[0] + " no es un numero valido");
             System.exit(1);
         }
-        productos= new Producto [num_productos];
-        th = new TablaHash((int) num_productos/5); // En cada lista de la tabla habra 5 productos en media
-        relaciones = new Integer[num_productos][num_productos];
 
-        Grafo g = new Grafo();
+        try{
+            repeticiones = Integer.parseInt(args[3]);
+        }
+        catch(NumberFormatException e){
+            System.err.println("El numero de repeticiones "+ args[3] + " no es un numero valido");
+            System.exit(1);
+        }
+
+        productos= new Producto [num_productos];
+        relaciones = new Integer[num_productos][num_productos];
+        th = new TablaHash((int) num_productos/5); // En cada lista de la tabla habra 5 productos en media
 
         cargarProductos();
         cargarRelaciones();
-        cargarGrafo(g);
-        System.out.println(g.toString());
 
-        Karger(g);
+        Grafo mejor = null;
+        for(int i=0 ; i<repeticiones ; i++) {
+            Grafo g = new Grafo();
+            cargarGrafo(g);
+            Karger(g);
+            if(mejor==null){
+                mejor=g;
+            }
+            else if(mejor.getSumaPesos()>g.getSumaPesos()){
+                mejor=g;
+            }
+        }
 
-        System.out.println("Peso de las aristas: "+g.getSumaPesos());
+        System.out.println(mejor.toString());
+        System.out.println("Peso de las aristas: "+mejor.getSumaPesos());
     }
 
     private static void cargarProductos(){
@@ -88,9 +107,7 @@ public class Practica1 {
             for(int j=0 ; j<componentes.length ; j++) {
                 try {
                     Integer conexiones = Integer.parseInt(componentes[j]);
-                    //if(conexiones>0){
                     relaciones[i][j] = conexiones;
-                    //}
                 } catch (NumberFormatException e) {}
             }
         }
@@ -101,9 +118,9 @@ public class Practica1 {
         //Mientras queden mas de 2 vertices comprimimos dos al azar
         while (g.getNumVertices() > 2) {
             int arista = g.elegirArista();
-            System.out.println("Contraer arista: "+arista);
+            //System.out.println("Contraer arista: "+arista);
             g.contraer(arista);
-            System.out.println(g.toString());
+            //System.out.println(g.toString());
         }
     }
 }
