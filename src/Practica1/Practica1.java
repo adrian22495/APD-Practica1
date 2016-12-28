@@ -48,6 +48,8 @@ public class Practica1 {
         System.out.println(g.toString());
 
         Karger(g);
+
+        System.out.println("Peso de las aristas: "+g.getSumaPesos());
     }
 
     private static void cargarProductos(Grafo g){
@@ -72,7 +74,7 @@ public class Practica1 {
                 try {
                     Integer conexiones = Integer.parseInt(componentes[j]);
                     if(conexiones>0 && i!=j){
-                        Arista a = new Arista("p"+(j+1),"p"+(i+1));
+                        Arista a = new Arista("p"+(j+1),"p"+(i+1), conexiones);
                         g.añadirArista(a);
                     }
                 } catch (NumberFormatException e) {}
@@ -84,7 +86,7 @@ public class Practica1 {
 
         //Mientras queden mas de 2 vertices comprimimos dos al azar
         while (g.getNumVertices() > 2) {
-            int arista = r.nextInt(g.getNumAristas());
+            int arista = g.elegirArista();
             System.out.println("Contraer arista: "+arista);
             g.contraer(arista);
             System.out.println(g.toString());

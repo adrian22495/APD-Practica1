@@ -2,17 +2,25 @@ package Practica1;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Grafo {
 
+    private static Random r = new Random(System.currentTimeMillis());
+
     private TablaHash vertices = new TablaHash(7);
     private ArrayList<Arista> aristas = new ArrayList<Arista>();
+    private int suma_pesos = 0;
 
     public Grafo(){}
 
     public Grafo(TablaHash v, ArrayList<Arista> a){
         vertices = v;
         aristas = a;
+
+        for(int i=0; i<a.size() ; i++){
+            suma_pesos = suma_pesos + a.get(i).getPeso();
+        }
     }
 
     public void añadirVertice(Vertice v){
@@ -21,6 +29,7 @@ public class Grafo {
 
     public void añadirArista(Arista a){
         aristas.add(a);
+        suma_pesos = suma_pesos + a.getPeso();
     }
 
     public int getNumVertices(){
@@ -29,6 +38,10 @@ public class Grafo {
 
     public int getNumAristas(){
         return aristas.size();
+    }
+
+    public int getSumaPesos(){
+        return suma_pesos;
     }
 
     public Vertice getVertice(String n){
@@ -52,6 +65,7 @@ public class Grafo {
         //Eliminamos el vertice y la arista de las listas
         vertices.borrarVertice(id_v2);
         aristas.remove(arista);
+        suma_pesos = suma_pesos - a.getPeso();
 
         //Cambiamos las aristas con un extremo en v2, por v1
         for(int i=0 ; i<aristas.size() ; i++){
@@ -63,9 +77,24 @@ public class Grafo {
                 a.setVertice2(id_v1);
             }
             if(a.getVertice1().equals(a.getVertice2())){
+                suma_pesos = suma_pesos - a.getPeso();
                 aristas.remove(i);
             }
         }
+    }
+
+    public int elegirArista(){
+
+        int aleatorio = 1+r.nextInt(suma_pesos);
+        int acumulado = 0;
+
+        for(int i=0 ; i<getNumAristas() ; i++){
+            acumulado = acumulado + aristas.get(i).getPeso();
+            if(acumulado>=aleatorio){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public String toString(){

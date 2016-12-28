@@ -3,10 +3,12 @@ package Practica1;
 public class Arista {
     private String vertice_1;
     private String vertice_2;
+    private int peso;
 
-    public Arista(String v1, String v2){
+    public Arista(String v1, String v2, int p){
         vertice_1 = v1;
         vertice_2 = v2;
+        peso = p;
     }
 
     public String getVertice1(){
@@ -15,6 +17,10 @@ public class Arista {
 
     public String getVertice2(){
         return vertice_2;
+    }
+
+    public int getPeso(){
+        return peso;
     }
 
     public void setVertice1(String v1){
