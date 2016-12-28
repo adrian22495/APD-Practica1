@@ -29,7 +29,11 @@ public class Vertice {
         else{
             String cadena = "" + p.getNombre();
             for(int i=0 ; i<absorbidos.size() ; i++){
-                cadena = cadena + "(" + absorbidos.get(i).toString() + ")";
+                try {
+                    cadena = cadena + "(" + absorbidos.get(i).toString() + ")";
+                }catch (NullPointerException e){
+                    System.out.println("asdf");
+                }
             }
             return cadena;
         }

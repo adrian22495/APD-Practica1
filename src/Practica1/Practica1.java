@@ -15,6 +15,7 @@ public class Practica1 {
     private static Scanner lector_re = null;
     private static TablaHash th = null;
     private static Integer relaciones[][] = null;
+    private static Producto productos[];
 
     public static void main(String[] args){
 
@@ -36,15 +37,15 @@ public class Practica1 {
             System.err.println("El numero de porductos "+ num_productos + " no es un numero valido");
             System.exit(1);
         }
-
+        productos= new Producto [num_productos];
         th = new TablaHash((int) num_productos/5); // En cada lista de la tabla habra 5 productos en media
         relaciones = new Integer[num_productos][num_productos];
 
         Grafo g = new Grafo();
 
-        cargarProductos(g);
-        cargarRelaciones(g);
-
+        cargarProductos();
+        cargarRelaciones();
+        cargarGrafo(g);
         System.out.println(g.toString());
 
         Karger(g);
@@ -52,31 +53,44 @@ public class Practica1 {
         System.out.println("Peso de las aristas: "+g.getSumaPesos());
     }
 
-    private static void cargarProductos(Grafo g){
+    private static void cargarProductos(){
         for(int i=0 ; i<num_productos ; i++) {
             String producto = lector_pr.nextLine();
             String[] componentes = producto.split(" ");
             try {
-                Producto p = new Producto(componentes[0], Integer.parseInt(componentes[1]), Double.parseDouble(componentes[2]));
-                Vertice v = new Vertice(p);
-                g.añadirVertice(v);
+                productos[i] = new Producto(componentes[0], Integer.parseInt(componentes[1]), Double.parseDouble(componentes[2]));
             } catch (NumberFormatException e) {
                 System.out.println("ERROR");
             }
         }
     }
+    private static void cargarGrafo(Grafo g){
+        for(int i=0 ; i<num_productos ; i++) {
+            Vertice v = new Vertice(productos[i]);
+            g.añadirVertice(v);
+        }
+        for(int i=0 ; i<num_productos ; i++){
+            for(int j=0 ; j<i+1 ; j++) {
+                try {
+                    if(relaciones[i][j]>0 && i!=j){
+                        Arista a = new Arista("p"+(j+1),"p"+(i+1), relaciones[i][j]);
+                        g.añadirArista(a);
+                    }
+                } catch (NumberFormatException e) {}
+            }
+        }
+    }
 
-    private static void cargarRelaciones(Grafo g){
+    private static void cargarRelaciones(){
         for(int i=0 ; i<num_productos ; i++){
             String relacion = lector_re.nextLine();
             String[] componentes = relacion.split(" ");
             for(int j=0 ; j<componentes.length ; j++) {
                 try {
                     Integer conexiones = Integer.parseInt(componentes[j]);
-                    if(conexiones>0 && i!=j){
-                        Arista a = new Arista("p"+(j+1),"p"+(i+1), conexiones);
-                        g.añadirArista(a);
-                    }
+                    //if(conexiones>0){
+                    relaciones[i][j] = conexiones;
+                    //}
                 } catch (NumberFormatException e) {}
             }
         }
