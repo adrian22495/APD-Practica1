@@ -65,6 +65,7 @@ public class Practica1 {
         /************** EJECUCION DE KARGER ****************/
         System.out.println("Ejecutando Karger con "+num_productos+" productos y "+repeticiones+" repeticiones...");
         Grafo mejor = null;
+        long inicio = System.currentTimeMillis();
         for(int i=0 ; i<repeticiones ; i++) {
             System.out.println("\nRepeticion numero: "+(i+1));
             Grafo g = new Grafo();
@@ -79,10 +80,12 @@ public class Practica1 {
                 mejor=g;
             }
         }
+        long fin = System.currentTimeMillis();
 
         /************** RESULTADOS ****************/
         System.out.println("\nResultado final:");
         System.out.println("----------------");
+        System.out.println("Tiempo trascurrido(ms): "+(fin-inicio)+"\n");
         System.out.println(mejor.toString());
         System.out.println("Peso de las aristas: "+mejor.getSumaPesos());
     }
