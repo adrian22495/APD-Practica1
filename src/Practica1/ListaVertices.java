@@ -43,18 +43,6 @@ public class ListaVertices {
         }
     }
 
-    public Vertice buscarVertice(ListaVertices ls, String nombre){
-        Vertice v = ls.getVertice();
-        if (v!= null && v.getProducto().getNombre().equals(nombre)){
-            return v;
-        }
-        ListaVertices siguiente = ls.getSiguiente();
-        if(siguiente != null){
-            return buscarVertice(siguiente, nombre);
-        }
-        return null;
-    }
-
     public String toString(){
         if(siguiente==null){
             if(vertice==null){

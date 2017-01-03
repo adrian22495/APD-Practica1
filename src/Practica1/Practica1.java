@@ -13,6 +13,8 @@ public class Practica1 {
     private static int num_productos = 0;
     private static Scanner lector_pr = null;
     private static Scanner lector_re = null;
+
+    //Estructuras para almacenar los datos de los productos y sus relaciones
     private static TablaHash th = null;
     private static Integer[][] relaciones;
     private static Producto[] productos;
@@ -21,6 +23,7 @@ public class Practica1 {
 
     public static void main(String[] args){
 
+        /************** COMPROBACION DE ARGUMENTOS ****************/
         if(args.length!=4){
             System.err.println("Uso: java Practica1 [num_productos] [fichero_productos] [fichero_relaciones] [repeticiones]");
             System.exit(1);
@@ -48,18 +51,27 @@ public class Practica1 {
             System.exit(1);
         }
 
+        /************** INICIALIZACION ****************/
+        //Creamos las estructuras que contendran los datos
         productos= new Producto [num_productos];
         relaciones = new Integer[num_productos][num_productos];
         th = new TablaHash((int) num_productos/5); // En cada lista de la tabla habra 5 productos en media
 
+        /************** LECTURA DE FICHEROS ****************/
+        //Cargamos la informacion de los ficheros en las estructuras
         cargarProductos();
         cargarRelaciones();
 
+        /************** EJECUCION DE KARGER ****************/
+        System.out.println("Ejecutando Karger con "+num_productos+" productos y "+repeticiones+" repeticiones...");
         Grafo mejor = null;
         for(int i=0 ; i<repeticiones ; i++) {
+            System.out.println("\nRepeticion numero: "+(i+1));
             Grafo g = new Grafo();
             cargarGrafo(g);
             Karger(g);
+            System.out.println("Numero de aristas: "+g.getNumAristas());
+            System.out.println("Peso de las aristas: "+g.getSumaPesos());
             if(mejor==null){
                 mejor=g;
             }
@@ -68,10 +80,16 @@ public class Practica1 {
             }
         }
 
+        /************** RESULTADOS ****************/
+        System.out.println("\nResultado final:");
+        System.out.println("----------------");
         System.out.println(mejor.toString());
         System.out.println("Peso de las aristas: "+mejor.getSumaPesos());
     }
 
+
+
+    //Carga los datos de los productos de los ficheros en la estructura correspondiente
     private static void cargarProductos(){
         for(int i=0 ; i<num_productos ; i++) {
             String producto = lector_pr.nextLine();
@@ -83,6 +101,22 @@ public class Practica1 {
             }
         }
     }
+
+    //Carga los datos de las relaciones de los productos de los ficheros en la estructura correspondiente
+    private static void cargarRelaciones(){
+        for(int i=0 ; i<num_productos ; i++){
+            String relacion = lector_re.nextLine();
+            String[] componentes = relacion.split(" ");
+            for(int j=0 ; j<componentes.length ; j++) {
+                try {
+                    Integer conexiones = Integer.parseInt(componentes[j]);
+                    relaciones[i][j] = conexiones;
+                } catch (NumberFormatException e) {}
+            }
+        }
+    }
+
+    //Introduce en el grafo [g] los productos y relaciones previamente cargados
     private static void cargarGrafo(Grafo g){
         for(int i=0 ; i<num_productos ; i++) {
             Vertice v = new Vertice(productos[i]);
@@ -100,27 +134,13 @@ public class Practica1 {
         }
     }
 
-    private static void cargarRelaciones(){
-        for(int i=0 ; i<num_productos ; i++){
-            String relacion = lector_re.nextLine();
-            String[] componentes = relacion.split(" ");
-            for(int j=0 ; j<componentes.length ; j++) {
-                try {
-                    Integer conexiones = Integer.parseInt(componentes[j]);
-                    relaciones[i][j] = conexiones;
-                } catch (NumberFormatException e) {}
-            }
-        }
-    }
-
+    //Ejecuta el algoritmo de Karger
     private static void Karger(Grafo g) {
 
         //Mientras queden mas de 2 vertices comprimimos dos al azar
         while (g.getNumVertices() > 2) {
             int arista = g.elegirArista();
-            //System.out.println("Contraer arista: "+arista);
             g.contraer(arista);
-            //System.out.println(g.toString());
         }
     }
 }

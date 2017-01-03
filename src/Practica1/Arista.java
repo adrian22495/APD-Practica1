@@ -32,6 +32,6 @@ public class Arista {
     }
 
     public String toString(){
-        return vertice_1 + "-" + vertice_2;
+        return vertice_1 + "-" + vertice_2 + "(" + peso + ")";
     }
 }

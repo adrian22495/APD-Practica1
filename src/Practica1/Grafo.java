@@ -52,17 +52,13 @@ public class Grafo {
         return aristas.get(id);
     }
 
+    //Contrae la arista [arista], el primer vertice de esta absorbe al segundo y se modifican las demas aristas implicadas
     public void contraer(int arista){
         Arista a = aristas.get(arista);
         String id_v1 = a.getVertice1();
         Vertice v1 = vertices.buscarVertice(id_v1);
         String id_v2 = a.getVertice2();
         Vertice v2 = vertices.buscarVertice(id_v2);
-
-        int nulos = 0;
-        if(v1==null || v2==null){
-            nulos ++;
-        }
 
         //v1 absorve v2
         v1.absorber(v2);
@@ -89,6 +85,7 @@ public class Grafo {
         }
     }
 
+    //Se elije una arista aleatoriamente en funcion de su peso
     public int elegirArista(){
 
         int aleatorio = 1+r.nextInt(suma_pesos);

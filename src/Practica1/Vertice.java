@@ -18,6 +18,7 @@ public class Vertice {
         return absorbidos;
     }
 
+    //Introduce el vertice [v] en los absorbidos
     public void absorber(Vertice v){
         absorbidos.add(v);
     }
